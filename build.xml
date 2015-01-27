@@ -1,7 +1,9 @@
 <project name="dispatcher" default="main">
 	<target name="curl">
 		<exec executable="curl">
-			<arg line="-d 'v1=${a}&amp;v2=${b}' localhost:8080/job/compare/buildWithParameters" />
+			<arg value="-d 'v1=${a}'" />
+			<arg value="-d 'v2=${b}'" />
+			<arg value="localhost:8080/job/compare/buildWithParameters" />
 		</exec>
 	</target>
 	
