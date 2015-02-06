@@ -1,5 +1,7 @@
-<project name="dispatcher" default="main" xmlns:if="ant:if">
-	<property name="a" value="http://test-9/9/job/test-portal-fixpack(ee-6.2.10_6.2.10.9)/buildWithParameters" />
+<project name="dispatcher" default="main">
+	<taskdef resource="net/sf/antcontrib/antlib.xml" />
+	
+	<property name="a" value="http://test-2/2/job/test-portal-fixpack(ee-6.2.10_6.2.10.9)/buildWithParameters" />
 	<property name="b" value="http://test-10.lax.liferay.com/10/job/test-portal-fixpack(ee-6.2.10_6.2.10.1)/buildWithParameters" />
 	<property name="c" value="http://test-11.lax.liferay.com/11/job/test-portal-fixpack(ee-6.2.10_6.2.10.1)/buildWithParameters" />
 	<property name="d" value="http://test-12.lax.liferay.com/12/job/test-deprecated-portal-fixpack(ee-6.0.12..ee-6.2.10)/buildWithParameters" />
@@ -17,49 +19,40 @@
 			<arg value="token=${token}" />
 			<arg value="-d" />
 			<arg value="test.build.fix.pack.zip.url=${test.build.fix.pack.zip.url}" />
-			<arg value="-d" if:true="${is.smoke.test.only}" />
-			<arg value="run.smoke.test.only=true" if:true="${is.smoke.test.only}" />
+			<arg value="-d" />
+			<arg value="test.build.run.smoke.test.only=${is.smoke.test.only}" />
+			<arg value="-d" />
+			<arg value="userId=${userId}" />
 			<arg value="${jenkins.url}" />
 		</exec>	
 	</target>
 
 	<target name="dispatcher">
 		<if>
-			<startswith string="${patcher.build.patcher.portal.version}" with="6.2" />
+			<contains string="${patcher.build.patcher.portal.version}" substring="6.2.10" />
 			<then>
 				<if>
-					<isfalse value="${run.smoke.test.only}" />
+					<isfalse value="${patcher.build.run.smoke.test.only}" />
 					<then>
 						<antcall target="curl">
-							<param name="jenkins.url" value="6.2.jenkins.url" />
+							<param name="jenkins.url" value="${6.2.jenkins.url}" />
 							<param name="is.smoke.test.only" value="false" />
 						</antcall>
 					</then>
 				</if>
 				
 				<antcall target="curl">
-					<param name="jenkins.url" value="smoke.test.jenkins.url" />
+					<param name="jenkins.url" value="${smoke.test.jenkins.url}" />
 					<param name="is.smoke.test.only" value="true" />
 				</antcall>
 			</then>
 			<elseif>
-				<startswith string="${patcher.build.patcher.portal.version}" with="6.1" />
+				<contains string="${patcher.build.patcher.portal.version}" substring="6.1.30" />
 				<then>
-					<if>
-						<istrue value="${run.smoke.test.only}" />
-						<then>
-							<antcall target="curl">
-								<param name="jenkins.url" value="${6.1.jenkins.url}" />
-								<param name="is.smoke.test.only" value="true" />
-							</antcall>					
-						</then>
-						<else>
-							<antcall target="curl">
-								<param name="jenkins.url" value="6.1.jenkins.url" />
-								<param name="is.smoke.test.only" value="false" />
-							</antcall>
-						</else>
-					</if>					
+					<antcall target="curl">
+						<param name="jenkins.url" value="${6.1.jenkins.url}" />
+						<param name="is.smoke.test.only" value="${patcher.build.run.smoke.test.only}" />
+					</antcall>					
 				</then>
 			</elseif>
 		</if>
