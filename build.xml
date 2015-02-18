@@ -22,6 +22,7 @@
 			<arg value="test.build.run.smoke.test.only=${is.smoke.test.only}" />
 			<arg value="-d" />
 			<arg value="userId=${userId}" />
+			<arg value="-d" />
 			<arg value="patcher.build.id=${patcher.build.id}" />
 			<arg value="${jenkins.url}" />
 		</exec>	
