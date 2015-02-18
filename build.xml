@@ -1,10 +1,14 @@
 <project name="dispatcher" default="main">
 	<taskdef resource="net/sf/antcontrib/antlib.xml" />
-
+<!--
 	<property name="6.1.jenkins.url" value="http://test-12.lax.liferay.com/12/job/test-deprecated-portal-fixpack(ee-6.0.12..ee-6.2.10)/buildWithParameters" />
-	<property name="6.2.jenkins.url" value="http://test-2/2/job/test-portal-fixpack(ee-6.2.10_6.2.10.9)/buildWithParameters" />
+	<property name="6.2.jenkins.url" value="http://test-2.liferay.com/job/test-portal-fixpack(ee-6.2.10_6.2.10.1)/buildWithParameters" />
 	<property name="smoke.test.jenkins.url" value="http://test-12.lax.liferay.com/12/job/test-deprecated-portal-fixpack(ee-6.0.12..ee-6.2.10)/buildWithParameters" />
-
+-->
+	<property name="6.1.jenkins.url" value="http://localhost:8080/job/test-12/buildWithParameters" />
+	<property name="6.2.jenkins.url" value="http://localhost:8080/job/test-2/buildWithParameters" />
+	<property name="smoke.test.jenkins.url" value="http://localhost:8080/job/test-12/buildWithParameters" />
+	
 	<property name="host.name" value="http://mirrors/files.liferay.com/private/ee/fix-packs/" />
 	<property name="test.build.fix.pack.zip.url" value="${host.name}${patcher.build.file.name}" />
 
@@ -18,6 +22,7 @@
 			<arg value="test.build.run.smoke.test.only=${is.smoke.test.only}" />
 			<arg value="-d" />
 			<arg value="userId=${userId}" />
+			<arg value="patcher.build.id=${patcher.build.id}" />
 			<arg value="${jenkins.url}" />
 		</exec>	
 	</target>
